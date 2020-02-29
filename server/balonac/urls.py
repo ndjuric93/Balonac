@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from players.views import CreatePlayerView, ListPlayersView
+
 urlpatterns = [
+    path('v1/player', ListPlayersView.as_view()),
+    path('v1/player/create', CreatePlayerView.as_view()),
     path('admin/', admin.site.urls),
 ]
