@@ -9,4 +9,4 @@ class EventSerializer(ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('date', 'location', 'players')
+        fields = ('date', 'location', 'players', 'completed')
