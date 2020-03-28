@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <MainPage title="Balonac" description="Dnevnik fudbala"/>
+    <!-- <MainPage title="Balonac" description="Dnevnik fudbala"/> -->
+    <Header />
+    <router-view/>
   </div>
 </template>
 
 <script>
-import MainPage from './components/MainPage.vue'
+import Header from './components/layout/Header.vue'
 
 export default {
   name: 'App',
   components: {
-    MainPage
+    Header
   }
 }
 </script>

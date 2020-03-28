@@ -2,8 +2,9 @@
   <div class="main">
     <h1>{{ title }}</h1>
     <p>{{ description }}</p>
-    <button>Dodaj novi termin</button><br>
-    <button>Pogledaj sve termine</button>
+    <router-link to="/events/create" tag="button">Napravi novi termin</router-link><br>
+    <router-link to="/events" tag="button">Pogledaj sve termine</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
