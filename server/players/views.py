@@ -12,4 +12,4 @@ class ListPlayersView(generics.ListAPIView):
 class CreatePlayerView(generics.CreateAPIView):
     queryset = Player.objects.all()
     serializer_class = CreatePlayerSerializer
-    permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]

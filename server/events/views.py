@@ -36,7 +36,7 @@ class EventForPlayersViewSet(mixins.UpdateModelMixin,
                              GenericViewSet):
     queryset = Event.objects.all()
     serializer_class = PlayerSerializer
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
 
     def update(self, request, *args, **kwargs):
         event = self.get_object()
