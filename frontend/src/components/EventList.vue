@@ -7,6 +7,7 @@
           <th scope="col">Date</th>
           <th scope="col">Location</th>
           <th scope="col">Player Count</th>
+          <th scope="col">Score</th>
           <th scope="col">Completed</th>
           <th scope="col">Explore</th>
         </tr>
@@ -16,9 +17,10 @@
           <td>{{event.date}}</td>
           <td>{{event.location}}</td>
           <td>{{event.players.length}}</td>
+          <td>{{event.score_a + ':' + event.score_b}}</td>
           <td>{{event.completed}}</td>
           <td>
-            <router-link to="/players" tag="button">Pogledaj sve termine</router-link>
+            <router-link to="/players" tag="button">Details</router-link>
           </td>
         </tr>
       </tbody>

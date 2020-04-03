@@ -3,10 +3,12 @@ from django.db import models
 from players.models import Player
 
 
-class EventPlayer(Player):
+class EventPlayer(models.Model):
     player = models.ForeignKey(
         Player, related_name='base_player', on_delete=models.CASCADE)
     team = models.CharField(max_length=32, blank=True, null=True)
+    goals_in_game = models.IntegerField(default=0)
+    assists_in_game = models.IntegerField(default=0)
 
 
 class Event(models.Model):
