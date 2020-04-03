@@ -1,7 +1,14 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 
-from events.models import Event
-from players.serializers import PlayerSerializer
+from events.models import Event, EventPlayer
+
+
+class EventPlayerSerializer(ModelSerializer):
+    player_name = CharField(source='player.name', read_only=True)
+
+    class Meta:
+        model = EventPlayer
+        fields = ['player_name', 'goals_in_game', 'assists_in_game']
 
 
 class EventSerializer(ModelSerializer):
@@ -16,6 +23,5 @@ class SingleEventSerializer(ModelSerializer):
     class Meta:
         model = Event
         fields = (
-            'id', 'date', 'location', 'score_a',
-            'score_b', 'players', 'completed'
+            'date', 'location', 'score_a', 'score_b', 'players', 'completed'
         )
