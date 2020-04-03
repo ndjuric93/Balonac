@@ -4,7 +4,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 from rest_framework.viewsets import GenericViewSet
 
 from events.models import Event, EventPlayer
-from events.serializers import EventSerializer
+from events.serializers import EventSerializer, SingleEventSerializer
 from players.models import Player
 from players.serializers import PlayerSerializer
 
@@ -16,7 +16,6 @@ class EventViewSet(mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    GenericViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
 
     def update(self, request, *args, **kwargs):
         event = self.get_object()
@@ -28,6 +27,12 @@ class EventViewSet(mixins.CreateModelMixin,
         event.completed = True
         event.save()
         return HttpResponse(status=HTTP_200_OK)
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return SingleEventSerializer
+        return EventSerializer
+
 
 
 class EventForPlayersViewSet(mixins.UpdateModelMixin,

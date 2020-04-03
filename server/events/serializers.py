@@ -5,8 +5,17 @@ from players.serializers import PlayerSerializer
 
 
 class EventSerializer(ModelSerializer):
-    players = PlayerSerializer(read_only=True, many=True)
+    class Meta:
+        model = Event
+        fields = ('id', 'date', 'location', 'score_a', 'score_b')
+
+
+class SingleEventSerializer(ModelSerializer):
+    players = EventPlayerSerializer(read_only=True, many=True)
 
     class Meta:
         model = Event
-        fields = ('date', 'location', 'players', 'completed')
+        fields = (
+            'id', 'date', 'location', 'score_a',
+            'score_b', 'players', 'completed'
+        )
