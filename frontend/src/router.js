@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import MainPage from './components/MainPage.vue'
+import Event from './components/Event.vue'
 import EventList from './components/EventList.vue'
 import EventCreator from './components/EventCreator.vue'
 import PlayerList from './components/PlayerList.vue'
@@ -28,6 +29,12 @@ export default new Router({
       path: '/events/create',
       name: 'eventCreator',
       component: EventCreator
+    },
+    {
+      path: '/events/:id',
+      name: 'event',
+      component: Event,
+      props: true
     }
   ]
 })

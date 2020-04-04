@@ -64,28 +64,28 @@ def load_events_table(data):
                 cnt += 1
     scores = defaultdict(dict)
     curr = conn.cursor()
-    for gs in game_stats:
-        dat = gs.date.split(' ')
-        tmp = dat[0].split('-')
-        tmp[0] = '0' + tmp[0] if len(tmp[0]) == 1 else tmp[0]
-        tmp[1] = '0' + tmp[1] if len(tmp[1]) == 1 else tmp[1]
-        tmp = '-'.join([tmp[2], tmp[0], tmp[1]]) + ' ' + dat[1]
-        print(tmp)
-
+    print(len(game_stats))
+    for i, gs in enumerate(game_stats):
+        print(gs.team)
+    #     sql = f'''
+    #         update events_eventplayer set team={gs.team} where id={i+2}
+    #     '''
+    #     curr.execute(sql)
+    # conn.commit()
+    
         # get_date_id_query = 'select id from events_event where date=\'f{tmp}\''
         # get_player_id_query = 'select distinct players_player.id from players_player inner join events_eventplayer on players_player.id = events_eventplayer.player_id where name=\'{gs.name}\''
-        sql = f'''
-        insert into events_event_players (event_id, eventplayer_id)
-            VALUES(
-                (select id from events_event where date='{tmp}'),
-                (select distinct players_player.id from players_player 
-                    inner join events_eventplayer on players_player.id = events_eventplayer.player_id
-                    where name='{gs.name}'
-                )
-            );
-        '''
-        curr.execute(sql)
-    conn.commit()
+        # sql = f'''
+        # insert into events_event_players (event_id, eventplayer_id)
+        #     VALUES(
+        #         (select id from events_event where date='{tmp}'),
+        #         (select distinct players_player.id from players_player 
+        #             inner join events_eventplayer on players_player.id = events_eventplayer.player_id
+        #             where name='{gs.name}'
+        #         )
+        #     );
+        # '''
+    # conn.commit()
         # if gs.team in scores[gs.date]:
         #     scores[gs.date][gs.team] += int(gs.g)
         # else:

@@ -1,26 +1,24 @@
 <template>
-  <div class="main">
+  <div>
     <h1>This is a list of all the events</h1>
     <table>
       <thead>
         <tr>
+          <th scope="col">ID</th>
           <th scope="col">Date</th>
           <th scope="col">Location</th>
-          <th scope="col">Player Count</th>
           <th scope="col">Score</th>
-          <th scope="col">Completed</th>
           <th scope="col">Explore</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(event) in events" :key="event">
+        <tr v-for="(event) in events" :key="event.id">
+          <td>{{event.id}}</td>
           <td>{{event.date}}</td>
           <td>{{event.location}}</td>
-          <td>{{event.players.length}}</td>
           <td>{{event.score_a + ':' + event.score_b}}</td>
-          <td>{{event.completed}}</td>
           <td>
-            <router-link to="/players" tag="button">Details</router-link>
+            <router-link :to="{name: 'event', params:{id: event.id}}">Details</router-link>
           </td>
         </tr>
       </tbody>
@@ -33,6 +31,8 @@ import axios from 'axios'
 
 export default {
   name: 'EventList',
+  components: {
+  },
   data: function () {
     return {
       events: []
@@ -43,8 +43,9 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/v1/event')
+      return axios.get('http://localhost:8000/v1/event')
         .then(response => {
+          console.log(response.data)
           this.events = response.data
         }).catch(e => {
           this.errors.push(e)

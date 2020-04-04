@@ -12,6 +12,12 @@ class EventPlayerSerializer(ModelSerializer):
 
 
 class EventSerializer(ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'date', 'location', 'score_a', 'score_b')
+
+
+class SingleEventSerializer(ModelSerializer):
     players = EventPlayerSerializer(read_only=True, many=True)
 
     class Meta:
