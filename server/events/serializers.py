@@ -8,7 +8,7 @@ class EventPlayerSerializer(ModelSerializer):
 
     class Meta:
         model = EventPlayer
-        fields = ['player_name', 'goals_in_game', 'assists_in_game']
+        fields = ['player_name', 'goals_in_game', 'assists_in_game', 'team']
 
 
 class EventSerializer(ModelSerializer):
@@ -18,7 +18,8 @@ class EventSerializer(ModelSerializer):
 
 
 class SingleEventSerializer(ModelSerializer):
-    players = EventPlayerSerializer(read_only=True, many=True)
+    players = EventPlayerSerializer(
+        read_only=True, many=True, source='event_player')
 
     class Meta:
         model = Event
