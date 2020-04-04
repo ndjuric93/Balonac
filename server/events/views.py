@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from rest_framework import mixins
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.response import Response
 
 from events.models import Event, EventPlayer
 from events.serializers import EventSerializer, SingleEventSerializer
@@ -16,6 +17,13 @@ class EventViewSet(mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    GenericViewSet):
     queryset = Event.objects.all()
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     players = instance.eventplayer_set.all()
+    #     serializer = self.get_serializer(instance)
+    #     print(serializer.data)
+    #     return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         event = self.get_object()

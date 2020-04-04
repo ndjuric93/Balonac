@@ -72,20 +72,18 @@ def load_events_table(data):
     #     '''
     #     curr.execute(sql)
     # conn.commit()
-    
-        # get_date_id_query = 'select id from events_event where date=\'f{tmp}\''
-        # get_player_id_query = 'select distinct players_player.id from players_player inner join events_eventplayer on players_player.id = events_eventplayer.player_id where name=\'{gs.name}\''
-        # sql = f'''
-        # insert into events_event_players (event_id, eventplayer_id)
-        #     VALUES(
-        #         (select id from events_event where date='{tmp}'),
-        #         (select distinct players_player.id from players_player 
-        #             inner join events_eventplayer on players_player.id = events_eventplayer.player_id
-        #             where name='{gs.name}'
-        #         )
-        #     );
-        # '''
-    # conn.commit()
+        sql = f'''
+        insert into events_event_players (event_id, eventplayer_id)
+            VALUES(
+                (select id from events_event where date='{tmp}'),
+                (select distinct players_player.id from players_player 
+                    inner join events_eventplayer on players_player.id = events_eventplayer.player_id
+                    where name='{gs.name}'
+                )
+            );
+        '''
+        curr.execute(sql)
+    conn.commit()
         # if gs.team in scores[gs.date]:
         #     scores[gs.date][gs.team] += int(gs.g)
         # else:
