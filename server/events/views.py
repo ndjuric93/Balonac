@@ -18,13 +18,6 @@ class EventViewSet(mixins.CreateModelMixin,
                    GenericViewSet):
     queryset = Event.objects.all()
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     players = instance.eventplayer_set.all()
-    #     serializer = self.get_serializer(instance)
-    #     print(serializer.data)
-    #     return Response(serializer.data)
-
     def update(self, request, *args, **kwargs):
         event = self.get_object()
         for event_player in event.players.all():

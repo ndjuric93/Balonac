@@ -1,10 +1,13 @@
-from rest_framework import permissions, generics
+from rest_framework import permissions, mixins, generics
+from rest_framework.viewsets import GenericViewSet
 
 from players.models import Player
 from players.serializers import PlayerSerializer, CreatePlayerSerializer
 
 
-class ListPlayersView(generics.ListAPIView):
+class PlayersViewSet(mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
+                     GenericViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
 

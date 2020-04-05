@@ -17,15 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from players.views import CreatePlayerView, ListPlayersView
+from players.views import CreatePlayerView, PlayersViewSet
 from events.views import EventViewSet, EventForPlayersViewSet
 
 router = DefaultRouter()
 router.register(r'event', EventViewSet)
 router.register(r'event/player', EventForPlayersViewSet)
+router.register(r'player', PlayersViewSet)
 
 urlpatterns = [
-    path('v1/player', ListPlayersView.as_view()),
     path('v1/player/create', CreatePlayerView.as_view()),
     path('v1/', include(router.urls)),
     path('admin/', admin.site.urls),
