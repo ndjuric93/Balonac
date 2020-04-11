@@ -24,12 +24,11 @@ const store = new Vuex.Store({
         axios.defaults.headers.common.Authorization = 'Bearer ' + token
         router.push('/')
       }).catch(err => {
-        localStorage.removeItem('auth_token')
         console.log(err)
+        localStorage.removeItem('auth_token')
       })
     },
     logout (state) {
-      console.log('ThiS HAPPENS')
       state.token = ''
       localStorage.removeItem('auth_token')
     }

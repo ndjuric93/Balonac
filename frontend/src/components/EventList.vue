@@ -48,7 +48,6 @@ export default {
           if (e.status === 400) {
             this.$router.push('/login')
           }
-          console.log(e)
         })
     }
   }

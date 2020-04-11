@@ -58,10 +58,8 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.id)
     return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/event/' + this.id)
       .then(response => {
-        console.log(response.data)
         this.eventDetails = response.data
       }
       )
