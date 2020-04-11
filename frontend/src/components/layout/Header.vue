@@ -1,12 +1,17 @@
 <template>
-  <header class="header">
-    <h1>Balonac</h1>
+  <b-navbar fixed="top" type="dark" variant="dark">
+    <b-navbar-brand>
+    Balonac
+    </b-navbar-brand>
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/players">Players</router-link> |
-      <router-link to="/events">Events</router-link>
+      <b-navbar-nav>
+        <router-link to="/" tag="b-nav-item">Home</router-link>
+        <router-link to="/players" tag="b-nav-item">Players</router-link>
+        <router-link to="/events" tag="b-nav-item">Events</router-link>
+        <router-link to="/logout" tag="b-nav-item">Logout</router-link>
+      </b-navbar-nav>
     </div>
-  </header>
+  </b-navbar>
 </template>
 
 <script>

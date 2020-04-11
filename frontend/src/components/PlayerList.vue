@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(player) in players" :key="player">
+          <tr v-for="(player) in players" :key="player.id">
                 <td>{{player.name}}</td>
                 <td>{{player.goals}}</td>
                 <td>{{player.assists}}</td>
@@ -29,31 +29,24 @@
 <script>
 import axios from 'axios'
 
-axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-axios.defaults.xsrfCookieName = 'csrftoken'
-
 export default {
   name: 'PlayerList',
-  props: {
-    title: String,
-    description: String
-  },
   data: function () {
-    console.log('Data called')
     return {
-      players: this.fetchPlayers()
+      players: []
     }
   },
+  created: function () {
+    this.fetchPlayers()
+  },
   methods: {
-    mounted () {
-      return this.fetchPlayers()
-    },
     fetchPlayers () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/v1/player')
+      return axios.get('http://localhost:8000/v1/player')
         .then(response => {
+          console.log(response.data)
           this.players = response.data
         }).catch(e => {
-          this.errors.push(e)
+          console.log(e)
         })
     }
   }

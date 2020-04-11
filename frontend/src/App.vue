@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <MainPage title="Balonac" description="Dnevnik fudbala"/> -->
     <Header />
     <router-view/>
   </div>

@@ -52,7 +52,9 @@ export default {
   },
   data: function () {
     return {
-      eventDetails: {}
+      eventDetails: {
+        player: []
+      }
     }
   },
   mounted: function () {
@@ -63,11 +65,6 @@ export default {
         this.eventDetails = response.data
       }
       )
-  },
-  methods: {
-    checkTeam (player) {
-      return player.team === '0'
-    }
   },
   computed: {
     getTeamA () {

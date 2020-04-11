@@ -31,8 +31,6 @@ import axios from 'axios'
 
 export default {
   name: 'EventList',
-  components: {
-  },
   data: function () {
     return {
       events: []
@@ -45,14 +43,15 @@ export default {
     fetchEvents () {
       return axios.get('http://localhost:8000/v1/event')
         .then(response => {
-          console.log(response.data)
           this.events = response.data
         }).catch(e => {
-          this.errors.push(e)
+          if (e.status === 400) {
+            this.$router.push('/login')
+          }
+          console.log(e)
         })
     }
   }
-
 }
 </script>
 

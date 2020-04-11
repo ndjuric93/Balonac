@@ -1,8 +1,9 @@
 from django.http import HttpResponse
-from rest_framework import mixins
+from rest_framework import permissions, mixins
 from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from events.models import Event, EventPlayer
 from events.serializers import EventSerializer, SingleEventSerializer
@@ -17,6 +18,8 @@ class EventViewSet(mixins.CreateModelMixin,
                    mixins.DestroyModelMixin,
                    GenericViewSet):
     queryset = Event.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def update(self, request, *args, **kwargs):
         event = self.get_object()
@@ -35,14 +38,14 @@ class EventViewSet(mixins.CreateModelMixin,
         return EventSerializer
 
 
-
 class EventForPlayersViewSet(mixins.UpdateModelMixin,
                              mixins.CreateModelMixin,
                              mixins.DestroyModelMixin,
                              GenericViewSet):
     queryset = Event.objects.all()
     serializer_class = PlayerSerializer
-    # permission_classes = [IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def update(self, request, *args, **kwargs):
         event = self.get_object()

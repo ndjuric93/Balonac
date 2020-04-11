@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from players.views import CreatePlayerView, PlayersViewSet
 from events.views import EventViewSet, EventForPlayersViewSet
 
@@ -26,6 +29,8 @@ router.register(r'event/player', EventForPlayersViewSet)
 router.register(r'player', PlayersViewSet)
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/token/refresh', TokenRefreshView.as_view()),
     path('v1/player/create', CreatePlayerView.as_view()),
     path('v1/', include(router.urls)),
     path('admin/', admin.site.urls),
