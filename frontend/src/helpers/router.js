@@ -8,6 +8,7 @@ import Login from '../components/Login'
 import Logout from '../components/Logout'
 
 const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',

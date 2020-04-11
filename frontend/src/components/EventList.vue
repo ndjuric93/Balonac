@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get('http://localhost:8000/v1/event')
+      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/event')
         .then(response => {
           this.events = response.data
         }).catch(e => {

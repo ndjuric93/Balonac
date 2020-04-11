@@ -13,7 +13,7 @@ const store = new Vuex.Store({
   },
   actions: { // Async
     login (state, user) {
-      axios.post('http://localhost:8000/api/token/',
+      axios.post('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/token/',
         {
           username: user.username,
           password: user.password

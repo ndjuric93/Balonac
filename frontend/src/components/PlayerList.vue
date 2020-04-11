@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchPlayers () {
-      return axios.get('http://localhost:8000/v1/player')
+      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/player')
         .then(response => {
           console.log(response.data)
           this.players = response.data

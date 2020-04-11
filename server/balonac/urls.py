@@ -31,7 +31,7 @@ router.register(r'player', PlayersViewSet)
 urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh', TokenRefreshView.as_view()),
-    path('v1/player/create', CreatePlayerView.as_view()),
-    path('v1/', include(router.urls)),
-    path('admin/', admin.site.urls),
+    path('api/v1/player/create', CreatePlayerView.as_view()),
+    path('api/v1/', include(router.urls)),
+    path('api/admin/', admin.site.urls),
 ]
