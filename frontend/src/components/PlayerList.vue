@@ -41,11 +41,10 @@ export default {
   },
   methods: {
     fetchPlayers () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/player')
+      return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/player')
         .then(response => {
           this.players = response.data
-        }).catch(e => {
-        })
+        }).catch(e => { console.log(e) })
     }
   }
 }
@@ -60,7 +59,6 @@ table {
   border: 3px solid rgb(0, 0, 0);
   margin-left: auto;
   margin-right: auto;
-
 }
 
 table th {

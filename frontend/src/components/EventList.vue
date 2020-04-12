@@ -41,13 +41,11 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/event')
+      return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/event')
         .then(response => {
           this.events = response.data
         }).catch(e => {
-          if (e.status === 400) {
-            this.$router.push('/login')
-          }
+          console.log(e)
         })
     }
   }
