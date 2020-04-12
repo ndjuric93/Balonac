@@ -33,7 +33,7 @@ export default {
   name: 'EventList',
   data: function () {
     return {
-      events: []
+      events: this.fetchEvents()
     }
   },
   created: function () {
@@ -44,8 +44,6 @@ export default {
       return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/event')
         .then(response => {
           this.events = response.data
-        }).catch(e => {
-          console.log(e)
         })
     }
   }

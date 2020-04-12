@@ -19,26 +19,16 @@ axios.defaults.headers.common = {
 }
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
-axios.interceptors.response.use(function (config) {
-  return config
-}, function (error) {
-  // Prevent endless redirects (login is where you should end up)
-  if (error.request !== undefined) {
-    if (error.request.responseURL.includes('login')) {
-      return Promise.reject(error)
-    }
-  }
 
-  // If you can't refresh your token or you are sent Unauthorized on any request, logout and go to login
-  if (error.request !== undefined && (error.request.responseURL.includes('refresh') || (error.request.status === 401 && error.config.__isRetryRequest))) {
-    store.dispatch('logout')
-    console.log('IS THIS ALSO HAPPENIGN!!!!?')
-  } else if (error.request !== undefined && error.request.status === 401) {
-    console.log('PRE ERROR REFRESH???')
-    store.dispatch('refresh')
-    console.log('POST ERROR REFRESH???')
-    error.config.__isRetryRequest = true
-    return axios.request(error.config)
+axios.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  const originalRequest = error.config
+  if (error.response.status === 401) {
+    originalRequest._retry = true
+    store.commit('refresh')
+    originalRequest.headers.Authorization = 'Bearer ' + localStorage.getItem('auth_token')
+    return axios(originalRequest)
   }
   return Promise.reject(error)
 })

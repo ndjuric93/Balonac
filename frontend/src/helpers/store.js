@@ -11,6 +11,16 @@ const store = new Vuex.Store({
     refreshToken: localStorage.getItem('refresh_token') || ''
   },
   mutations: { // Sync
+    refresh (state) {
+      axios.post(process.env.VUE_APP_BASE_URL + 'api/token/refresh',
+        {
+          refresh: localStorage.getItem('refresh_token')
+        }).then(response => {
+        state.token = response.data.access
+        localStorage.setItem('auth_token', response.data.access)
+        axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.access
+      })
+    }
   },
   actions: { // Async
     login (state, user) {
@@ -36,22 +46,6 @@ const store = new Vuex.Store({
     logout (state) {
       state.token = ''
       localStorage.removeItem('auth_token')
-    },
-    refresh (state) {
-      console.log('Strting refres??')
-      console.log(state.refreshToken)
-      console.log(localStorage.getItem('refresh_token'))
-      axios.post(process.env.VUE_APP_BASE_URL + 'api/token/refresh',
-        {
-          refresh: localStorage.getItem('refresh_token')
-        }).then(response => {
-        console.log('Refreshiiiiingggg')
-        state.token = response.data.access
-        console.log('REFRESHED')
-        console.log(response.data.access)
-        localStorage.setItem('auth_token', response.data.access)
-        axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.access
-      })
     }
   },
   getters: {

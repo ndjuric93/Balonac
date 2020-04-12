@@ -33,7 +33,7 @@ export default {
   name: 'PlayerList',
   data: function () {
     return {
-      players: []
+      players: this.fetchPlayers()
     }
   },
   created: function () {
@@ -44,7 +44,7 @@ export default {
       return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/player')
         .then(response => {
           this.players = response.data
-        }).catch(e => { console.log(e) })
+        })
     }
   }
 }
