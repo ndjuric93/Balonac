@@ -1,35 +1,57 @@
 <template>
-  <b-navbar fixed="top" type="dark" variant="dark">
-    <b-navbar-brand>
-    Balonac
+  <b-navbar fixed="top" id="navBar" toggleable="sm" v-show="loggedIn">
+
+    <b-navbar-brand href="#" class="d-inline-block align-top" to="/">
+      <img src='../../assets/balloon-01-01.png' alt="Balonac">
     </b-navbar-brand>
-    <div id="nav">
-      <b-navbar-nav>
-        <router-link to="/" tag="b-nav-item">Home</router-link>
-        <router-link to="/players" tag="b-nav-item">Players</router-link>
-        <router-link to="/events" tag="b-nav-item">Events</router-link>
-        <router-link to="/logout" tag="b-nav-item">Logout</router-link>
-      </b-navbar-nav>
-    </div>
+
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-collapse id="nav-collapse" is-nav>
+
+    <b-navbar-nav class="ml-auto">
+      <b-nav-item to="/players">
+        <b-nav-text id="navItem">
+          PLAYERS
+        </b-nav-text>
+      </b-nav-item>
+      <b-nav-item to="/events">
+        <b-nav-text id="navItem">
+          EVENTS
+        </b-nav-text>
+      </b-nav-item>
+      <b-nav-item  to="/logout">
+        <b-nav-text id="navItem">
+          LOGOUT
+        </b-nav-text>
+      </b-nav-item>
+    </b-navbar-nav>
+    </b-collapse>
   </b-navbar>
 </template>
 
 <script>
+import { authComputed } from '../../helpers/vuex'
+
 export default {
-  name: 'Header'
+  name: 'Header',
+  methods: {
+    isLoggedIn: function () {
+      return localStorage.getItem('auth_token') !== ''
+    }
+  },
+  computed: {
+    ...authComputed
+  }
 }
 </script>
 
 <style scoped>
-  .header {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
+  #navBar {
+    background-color: #0c3c65;
   }
-  .header a {
-    color: #fff;
-    padding-right: 5px;
-    text-decoration: none;
+
+  #navItem {
+    color: white;
+    font-size: 20px;
   }
 </style>

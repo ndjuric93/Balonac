@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="eventList">
     <h1>This is a list of all the events</h1>
     <table>
       <thead>
@@ -33,7 +33,7 @@ export default {
   name: 'EventList',
   data: function () {
     return {
-      events: []
+      events: this.fetchEvents()
     }
   },
   created: function () {
@@ -41,13 +41,9 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/event')
+      return axios.get('v1/event')
         .then(response => {
           this.events = response.data
-        }).catch(e => {
-          if (e.status === 400) {
-            this.$router.push('/login')
-          }
         })
     }
   }
@@ -55,6 +51,10 @@ export default {
 </script>
 
 <style scoped>
+
+#eventList {
+  padding-top: 100px;
+}
 
 table {
   font-family: 'Open Sans', sans-serif;

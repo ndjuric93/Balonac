@@ -5,11 +5,8 @@
 <script>
 export default {
   name: 'Logout',
-  data: function () {
-    return {}
-  },
   created: function () {
-    this.$store.dispatch('logout')
+    this.$store.dispatch('LOGOUT')
     this.$router.push('/login')
   }
 }

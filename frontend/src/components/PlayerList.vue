@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div id="playerList">
     <h1>This is list of all players</h1>
     <table>
         <thead>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import getPlayers from '../services/players'
 
 export default {
   name: 'PlayerList',
@@ -37,21 +37,16 @@ export default {
     }
   },
   created: function () {
-    this.fetchPlayers()
-  },
-  methods: {
-    fetchPlayers () {
-      return axios.get('http://ec2-13-59-63-162.us-east-2.compute.amazonaws.com/api/v1/player')
-        .then(response => {
-          this.players = response.data
-        }).catch(e => {
-        })
-    }
+    getPlayers().then(players => { this.players = players })
   }
 }
 </script>
 
 <style scoped>
+
+#playerList {
+  padding-top: 100px
+}
 
 table {
   font-family: 'Open Sans', sans-serif;
@@ -60,7 +55,6 @@ table {
   border: 3px solid rgb(0, 0, 0);
   margin-left: auto;
   margin-right: auto;
-
 }
 
 table th {
