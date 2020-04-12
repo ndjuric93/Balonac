@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="eventList">
     <h1>This is a list of all the events</h1>
     <table>
       <thead>
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/event')
+      return axios.get('v1/event')
         .then(response => {
           this.events = response.data
         })
@@ -51,6 +51,10 @@ export default {
 </script>
 
 <style scoped>
+
+#eventList {
+  padding-top: 100px;
+}
 
 table {
   font-family: 'Open Sans', sans-serif;

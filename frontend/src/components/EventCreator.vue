@@ -7,7 +7,7 @@
         <label class="sr-only" for="inline-form-input-name">Name</label>
         <b-input id="inline-form-input-name" class="mb-1" placeholder="Location" />
         <b-form-datepicker id="example-datepicker" class="mb-1" />
-        <b-form-timepicker id="example-datepicker" class="mb-1" />
+        <b-form-timepicker id="example-timepicker" class="mb-3" />
       </b-form>
       </b-col>
     </b-row>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import getPlayers from '../helpers/players'
+import getPlayers from '../services/players'
 export default {
   name: 'EventCreator',
   data: function () {

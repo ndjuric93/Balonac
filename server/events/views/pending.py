@@ -6,7 +6,10 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from events.models import Event, EventPlayer
-from events.serializers import EventSerializer, SingleEventSerializer
+from events.serializers import (
+    EventSerializer,
+    SingleEventSerializer
+)
 from players.models import Player
 from players.serializers import PlayerSerializer
 

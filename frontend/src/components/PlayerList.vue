@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div id="playerList">
     <h1>This is list of all players</h1>
     <table>
         <thead>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import getPlayers from '../helpers/players'
+import getPlayers from '../services/players'
 
 export default {
   name: 'PlayerList',
@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style scoped>
+
+#playerList {
+  padding-top: 100px
+}
 
 table {
   font-family: 'Open Sans', sans-serif;

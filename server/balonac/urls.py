@@ -21,11 +21,13 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from players.views import CreatePlayerView, PlayersViewSet
-from events.views import EventViewSet, EventForPlayersViewSet
+from events.views.create import CreatedEventViewSet
+from events.views import RetrieveEventsViewSet
 
 router = DefaultRouter()
-router.register(r'event', EventViewSet)
-router.register(r'event/player', EventForPlayersViewSet)
+# router.register(r'event', EventViewSet)
+router.register(r'event/create', CreatedEventViewSet)
+router.register(r'event', RetrieveEventsViewSet)
 router.register(r'player', PlayersViewSet)
 
 urlpatterns = [

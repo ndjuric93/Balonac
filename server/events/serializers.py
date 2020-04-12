@@ -1,6 +1,37 @@
-from rest_framework.serializers import ModelSerializer, CharField
-
+from rest_framework.serializers import (
+    Serializer,
+    ModelSerializer,
+    CharField,
+    ListField,
+    IntegerField,
+    RelatedField
+)
 from events.models import Event, EventPlayer
+from players.serializers import PlayerSerializer
+from players.models import Player
+
+from events.services.create import create_event, update_event
+
+
+class SimpleEventPlayerSerializer(ModelSerializer):
+    class Meta:
+        model = EventPlayer
+        fields = ['player']
+
+
+class CreateEventSerializer(ModelSerializer):
+    event_player = SimpleEventPlayerSerializer(many=True)
+
+    class Meta:
+        model = Event
+        fields = ['location', 'date', 'event_player']
+
+    def create(self, validated_data):
+        event_players = validated_data.pop('event_player')
+        event = Event.objects.create(**validated_data)
+        for player in event_players:
+            EventPlayer.objects.create(event=event, player=player['player'])
+        return event
 
 
 class EventPlayerSerializer(ModelSerializer):
