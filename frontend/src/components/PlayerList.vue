@@ -27,25 +27,17 @@
 </template>
 
 <script>
-import axios from 'axios'
+import getPlayers from '../helpers/players'
 
 export default {
   name: 'PlayerList',
   data: function () {
     return {
-      players: this.fetchPlayers()
+      players: []
     }
   },
   created: function () {
-    this.fetchPlayers()
-  },
-  methods: {
-    fetchPlayers () {
-      return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/player')
-        .then(response => {
-          this.players = response.data
-        })
-    }
+    getPlayers().then(players => { this.players = players })
   }
 }
 </script>
