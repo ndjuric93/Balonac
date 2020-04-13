@@ -15,8 +15,8 @@
       <b-col >
         <b-table hover :items="allPlayers" :fields="fields" responsive="sm">
           <template v-slot:cell(select_player)="row">
-            <b-button size="sm" @click="selectPlayers(row.item.id)" class="mr-2">
-              Select
+            <b-button size="sm" @click="selectPlayers(row.item)" class="mr-2">
+            Select
             </b-button>
           </template>
         </b-table>
@@ -24,15 +24,14 @@
       <b-col sm>
         <b-table striped hover :items="eventPlayers" :fields="selectedFields">
           <template v-slot:cell(deselect_player)="row">
-            <b-button size="sm" @click="deselectPlayers(row.item.id)" class="mr-3">
-              Deselect
+            <b-button size="sm" @click="deselectPlayers(row.item)" class="mr-3">
+            Deselect
             </b-button>
           </template>
         </b-table>
       </b-col>
     </b-row>
-      <b-button variant="primary">Save</b-button>
-
+    <b-button variant="primary">Save</b-button>
   </b-container>
 </div>
 </template>
@@ -56,14 +55,16 @@ export default {
     fetchPlayers () {
       getPlayers().then(players => { this.allPlayers = players })
     },
-    selectPlayers (playerId) {
-      console.log(playerId)
-      this.eventPlayers.push(this.allPlayers[playerId])
-      this.allPlayers.splice(playerId, 1)
+    selectPlayers (selectedPlayer) {
+      const playerIndex = this.allPlayers.findIndex(player => selectedPlayer.id === player.id)
+      const player = this.allPlayers.splice(playerIndex, 1)
+      this.eventPlayers.push(player[0])
     },
-    deselectPlayers (playerId) {
-      this.allPlayers.push(this.eventPlayers[playerId])
-      this.eventPlayers.splice(playerId, 1)
+    deselectPlayers (deselectedPlayer) {
+      const playerIndex = this.eventPlayers.findIndex(player => deselectedPlayer.id === player.id)
+      const player = this.eventPlayers.splice(playerIndex, 1)
+      this.allPlayers.push(player[0])
+      this.allPlayers.sort((a, b) => a.id - b.id)
     },
     sendEventCreation () {
       console.log('Sending out an SOS')

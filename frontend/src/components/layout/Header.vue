@@ -8,6 +8,7 @@
         <router-link to="/" tag="b-nav-item">Home</router-link>
         <router-link to="/players" tag="b-nav-item">Players</router-link>
         <router-link to="/events" tag="b-nav-item">Events</router-link>
+        <router-link to="/events/create" tag="b-nav-item">Create New Event</router-link>
         <router-link to="/logout" tag="b-nav-item">Logout</router-link>
       </b-navbar-nav>
     </div>
