@@ -6,6 +6,7 @@ import EventCreator from '../components/EventCreator.vue'
 import PlayerList from '../components/PlayerList.vue'
 import Login from '../components/Login'
 import Logout from '../components/Logout'
+import Player from '../components/Player.vue'
 
 const router = new Router({
   mode: 'history',
@@ -49,9 +50,16 @@ const router = new Router({
     {
       path: '*',
       redirect: '/'
+    },
+    {
+      path: '/players/:id',
+      name: 'player',
+      component: Player,
+      props: true
     }
   ]
-})
+}
+)
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login']

@@ -10,6 +10,7 @@
             <th scope="col">Apps</th>
             <th scope="col">Won</th>
             <th scope="col">Lost</th>
+            <th scope="col">Explore</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,9 @@
                 <td>{{player.appearances}}</td>
                 <td>{{player.won}}</td>
                 <td>{{player.lost}}</td>
+                <td>
+            <router-link :to="{name: 'Player', params:{id: player.id}}">Details</router-link>
+          </td>
           </tr>
         </tbody>
     </table>
