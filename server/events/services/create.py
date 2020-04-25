@@ -8,23 +8,21 @@ def create_event(event_data, event_players):
 
     Event is created, and a set of passed players is registered to it.
     """
-    print(event_data)
     event = Event.objects.create(**event_data)
+    for player in event_players:
+        EventPlayer.objects.create(event=event, player=player['player'])
     return event
 
 
-def update_event(event, data):
+def update_event(event, event_data, event_players):
     """
     Register given players to a given event.
     """
-    if 'location' in data:
-        event.location = data['location']
-    if 'date' in data:
-        event.location = data['date']
+    if 'location' in event_data:
+        event.location = event_data['location']
+    if 'date' in event_data:
+        event.date = event_data['date']
     event.save()
-    for player in players:
-        EventPlayer(
-            event=event,
-            player=Player.objects.get(id=player)
-        ).save()
+    for player in event_players:
+        EventPlayer.objects.get_or_create(event=event, player=player['player'])
     return event

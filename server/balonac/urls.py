@@ -21,19 +21,20 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from players.views import CreatePlayerView, PlayersViewSet
-from events.views.create import CreatedEventViewSet
-from events.views import RetrieveEventsViewSet
+from events.views.events import EventsViewSet, EventStatusViewSet
+from events.views.event_player import UpdateEventPlayer
 
 router = DefaultRouter()
 # router.register(r'event', EventViewSet)
-router.register(r'event/create', CreatedEventViewSet)
-router.register(r'event', RetrieveEventsViewSet)
+router.register(r'event', EventsViewSet)
+router.register(r'event/status', EventStatusViewSet)
+router.register(r'event/player', UpdateEventPlayer)
 router.register(r'player', PlayersViewSet)
 
 urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh', TokenRefreshView.as_view()),
-    path('api/v1/player/create', CreatePlayerView.as_view()),
+    # path('api/v1/player/create', CreatePlayerView.as_view()),
     path('api/v1/', include(router.urls)),
     path('api/admin/', admin.site.urls),
 ]
