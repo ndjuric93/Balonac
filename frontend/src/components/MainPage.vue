@@ -10,9 +10,8 @@
               align="center"
               id="eventCard"
             >
-            <h3 id="newEventText">
-              MAKE NEW EVENT
-            </h3>
+              <img id="makeEventButton" src="../assets/more.svg" />
+              <h3 id="newEventText">MAKE NEW EVENT</h3>
             </b-card>
           </router-link>
         </b-col>
@@ -74,6 +73,9 @@ export default {
         })
         this.topPlayers = players.slice(0, 3)
       })
+    },
+    getUpcomingEvents: function () {
+
     }
   }
 }
@@ -81,9 +83,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#newEventText {
-  user-select: none;
-}
 
 #mainPageContainer {
   padding-top: 16%;
@@ -97,6 +96,19 @@ export default {
 
 #cardSize {
   height: 500px;
+}
+
+#makeEventButton {
+  margin-left: 15%;
+  float: left;
+  max-width:7%;
+  max-height:7%;
+}
+
+#newEventText {
+  margin-right: 20%;
+  float: right;
+  user-select: none;
 }
 
 </style>
