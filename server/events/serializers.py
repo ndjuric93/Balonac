@@ -4,6 +4,7 @@ from rest_framework.serializers import (
     CharField,
     ListField,
     IntegerField,
+    DateTimeField,
     RelatedField,
     PrimaryKeyRelatedField,
     ValidationError
@@ -61,6 +62,7 @@ class EventSerializer(ModelSerializer):
 class SingleEventSerializer(ModelSerializer):
     players = EventPlayerSerializer(
         read_only=True, many=True, source='event_player')
+    date = DateTimeField(format='%B %d, %H:%M')
 
     class Meta:
         model = Event
