@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: 'development',
     resolve: {
-        extensions: ['.js', '.vue']
+        extensions: ['.js', '.vue', '.scss']
     }
 }
 

@@ -1,28 +1,46 @@
 <template>
-  <div>
-    <h1>This is a list of all the events</h1>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Date</th>
-          <th scope="col">Location</th>
-          <th scope="col">Score</th>
-          <th scope="col">Explore</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(event) in events" :key="event.id">
-          <td>{{event.id}}</td>
-          <td>{{event.date}}</td>
-          <td>{{event.location}}</td>
-          <td>{{event.score_a + ':' + event.score_b}}</td>
-          <td>
-            <router-link :to="{name: 'event', params:{id: event.id}}">Details</router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div id="eventList" :style="{'background-image': 'url(' + require('../assets/eventList.jpg') + ')'}">
+
+    <b-container fluid>
+      <b-row class="justify-content-md-center">
+        <b-col md="auto">
+          <b-table
+            hover
+            table-variant="light"
+            head-variant="light"
+            :items="pendingEvents"
+            :fields="fields"
+            no-border-collapse
+            bordered
+          >
+            <template v-slot:cell(actions)="row">
+              <b-button size="sm" @click="redirectToEventDetails(row.item.id)" class="mr-1">
+                Details
+              </b-button>
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
+      <b-row class="justify-content-md-center">
+        <b-col md="auto">
+          <b-table
+            hover
+            table-variant="light"
+            head-variant="light"
+            :items="finishedEvents"
+            :fields="fields"
+            no-border-collapse
+            bordered
+          >
+            <template v-slot:cell(actions)="row">
+              <b-button size="sm" @click="redirectToEventDetails(row.item.id)" class="mr-1">
+                Details
+              </b-button>
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -33,7 +51,16 @@ export default {
   name: 'EventList',
   data: function () {
     return {
-      events: this.fetchEvents()
+      upcomingEvents: [],
+      finishedEvents: [],
+      pendingEvents: [],
+      fields: [
+        { key: 'date', label: 'Date', class: 'text-center' },
+        { key: 'location', label: 'Location', class: 'text-center' },
+        { key: 'score_a', label: 'Score A', class: 'text-center' },
+        { key: 'score_b', label: 'Score B', class: 'text-center' },
+        { key: 'actions', label: 'Actions' }
+      ]
     }
   },
   created: function () {
@@ -41,16 +68,28 @@ export default {
   },
   methods: {
     fetchEvents () {
-      return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/event')
+      return axios.get('v1/event')
         .then(response => {
-          this.events = response.data
+          const events = response.data
+          this.finishedEvents = events.filter(event => event.completed === 'F')
+          this.pendingEvents = events.filter(event => event.completed === 'P')
+          this.upcomingEvents = events.filter(event => event.completed === 'C')
         })
+    },
+    redirectToEventDetails (data) {
+      this.$router.push({ name: 'event', params: { id: data } })
     }
   }
 }
 </script>
 
 <style scoped>
+
+#eventList {
+  padding-top: 16%;
+  min-height: 100vh;
+  background-size: cover;
+}
 
 table {
   font-family: 'Open Sans', sans-serif;

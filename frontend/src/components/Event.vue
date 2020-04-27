@@ -1,5 +1,5 @@
 <template>
-<div class="event">
+<div id="event">
     <h1>{{eventDetails.location}}</h1>
     <h3>{{eventDetails.date}}</h3>
     <h2>Score</h2>
@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(player) in this.getTeamA" :key=player.id>
+        <tr v-for="(player) in this.teamA" :key=player.id>
           <td>{{player.player_name}}</td>
           <td>{{player.goals_in_game}}</td>
           <td>{{player.assists_in_game}}</td>
@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(player) in this.getTeamB" :key=player.id>
+        <tr v-for="(player) in this.teamB" :key=player.id>
           <td>{{player.player_name}}</td>
           <td>{{player.goals_in_game}}</td>
           <td>{{player.assists_in_game}}</td>
@@ -42,9 +42,6 @@
 <script>
 import axios from 'axios'
 
-axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-axios.defaults.xsrfCookieName = 'csrftoken'
-
 export default {
   name: 'Event',
   props: {
@@ -52,30 +49,36 @@ export default {
   },
   data: function () {
     return {
-      eventDetails: {
-        player: []
-      }
+      eventDetails: {},
+      teamA: [],
+      teamB: []
     }
   },
   mounted: function () {
-    return axios.get(process.env.VUE_APP_BASE_URL + 'api/v1/event/' + this.id)
+    return axios.get('v1/event/' + this.id)
       .then(response => {
         this.eventDetails = response.data
-      }
-      )
+        this.getTeamA()
+        this.getTeamB()
+      })
   },
-  computed: {
+  methods: {
     getTeamA () {
-      return this.eventDetails.players.filter(player => player.team === '0')
+      this.teamA = this.eventDetails.players.filter(player => player.team === '0')
     },
     getTeamB () {
-      return this.eventDetails.players.filter(player => player.team === '1')
+      this.teamB = this.eventDetails.players.filter(player => player.team === '1')
     }
   }
 }
 </script>
 
 <style scoped>
+
+#event {
+  padding-top: 100px;
+}
+
 table {
   font-family: 'Open Sans', sans-serif;
   width: auto;
