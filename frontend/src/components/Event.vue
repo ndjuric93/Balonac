@@ -1,8 +1,18 @@
 <template>
 <div id="event" :style="{'background-image': 'url(' + require('../assets/pastEvent.jpg') + ')'}">
   <div>
-    <div id="padding" />
+    <div id="padding">
+      <Scoreboard
+        :team0=this.scoreA
+        :team1=this.scoreB
+        id="scoreboard"
+      />
+    </div>
     <b-container id="container">
+      <b-row align-h="center">
+        <b-col  cols="5">
+        </b-col>
+      </b-row>
       <b-row md="justify-content-md-center">
         <b-col  md="4" class="p-3 ">
           <inline-svg
@@ -58,11 +68,13 @@
 <script>
 import axios from 'axios'
 import InlineSvg from 'vue-inline-svg'
+import Scoreboard from './helper/Scoreboard'
 
 export default {
   name: 'Event',
   components: {
-    InlineSvg
+    InlineSvg,
+    Scoreboard
   },
   props: {
     id: Number
@@ -71,6 +83,8 @@ export default {
     return {
       date: '',
       location: '',
+      scoreA: '/',
+      scoreB: '/',
       teamA: [],
       teamB: [],
       fields: [
@@ -80,11 +94,14 @@ export default {
       ]
     }
   },
-  mounted: function () {
+  created: function () {
     return axios.get('v1/event/' + this.id)
       .then(response => {
+        console.log(response.data)
         this.date = response.data.date
         this.location = response.data.location
+        this.scoreA = response.data.score_a
+        this.scoreB = response.data.score_b
         this.teamA = this.filterTeam(response.data.players, '0')
         this.teamB = this.filterTeam(response.data.players, '1')
       })
@@ -98,10 +115,6 @@ export default {
 </script>
 
 <style scoped>
-
-#padding {
-  height: 10px
-}
 
 #event {
   padding-top: 10%;
@@ -117,6 +130,15 @@ export default {
 
 #caption {
   text-align: center;
+}
+
+#padding {
+  position: absolute;
+  left: 43%;
+}
+
+#scoreboard {
+  margin-top: -45px;
 }
 
 </style>
