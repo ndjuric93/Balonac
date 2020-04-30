@@ -1,73 +1,114 @@
 <template>
-<div id="event">
-    <h1>{{eventDetails.location}}</h1>
-    <h3>{{eventDetails.date}}</h3>
-    <h2>Score</h2>
-    <h2>{{eventDetails.score_a}} : {{eventDetails.score_b}}</h2>
-    <table>
-      <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Goals</th>
-            <th scope="col">Assists</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(player) in this.teamA" :key=player.id>
-          <td>{{player.player_name}}</td>
-          <td>{{player.goals_in_game}}</td>
-          <td>{{player.assists_in_game}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Goals</th>
-          <th scope="col">Assists</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(player) in this.teamB" :key=player.id>
-          <td>{{player.player_name}}</td>
-          <td>{{player.goals_in_game}}</td>
-          <td>{{player.assists_in_game}}</td>
-        </tr>
-      </tbody>
-    </table>
+<div id="event" :style="{'background-image': 'url(' + require('../assets/pastEvent.jpg') + ')'}">
+  <div>
+    <div id="padding">
+      <Scoreboard
+        :team0=this.scoreA
+        :team1=this.scoreB
+        id="scoreboard"
+      />
+    </div>
+    <b-container id="container">
+      <b-row align-h="center">
+        <b-col  cols="5">
+        </b-col>
+      </b-row>
+      <b-row md="justify-content-md-center">
+        <b-col  md="4" class="p-3 ">
+          <inline-svg
+            :src="require('../assets/pastEventLeftPattern.svg')"
+            width=80%
+          />
+        </b-col>
+        <b-col md="4" class="ml-auto p-3 ">
+          <inline-svg
+            :src="require('../assets/pastEventRightPattern.svg')"
+            width=80%
+          />
+        </b-col>
+      </b-row>
+      <b-row md="justify-content-md-center">
+        <b-col >
+          <p id="caption">{{this.date}}, ({{this.location}}) </p>
+        </b-col>
+      </b-row>
+      <b-row class="justify-content-md-center">
+        <b-col md="auto">
+          <p id="caption">Team 1</p>
+          <b-table
+            hover
+            table-variant="light"
+            head-variant="light"
+            :items="teamA"
+            :fields="fields"
+            no-border-collapse
+            bordered
+          >
+          </b-table>
+        </b-col>
+        <b-col md="auto">
+          <p id="caption">Team 2</p>
+          <b-table
+            hover
+            table-variant="light"
+            head-variant="light"
+            :items="teamB"
+            :fields="fields"
+            no-border-collapse
+            bordered
+          >
+          </b-table>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import InlineSvg from 'vue-inline-svg'
+import Scoreboard from './helper/Scoreboard'
 
 export default {
   name: 'Event',
+  components: {
+    InlineSvg,
+    Scoreboard
+  },
   props: {
     id: Number
   },
   data: function () {
     return {
-      eventDetails: {},
+      date: '',
+      location: '',
+      scoreA: '/',
+      scoreB: '/',
       teamA: [],
-      teamB: []
+      teamB: [],
+      fields: [
+        { key: 'player_name', label: 'Players', class: 'text-center' },
+        { key: 'goals_in_game', label: 'Goals', class: 'text-center' },
+        { key: 'assists_in_game', label: 'Assistances', class: 'text-center' }
+      ]
     }
   },
-  mounted: function () {
+  created: function () {
     return axios.get('v1/event/' + this.id)
       .then(response => {
-        this.eventDetails = response.data
-        this.getTeamA()
-        this.getTeamB()
+        console.log(response.data)
+        this.date = response.data.date
+        this.location = response.data.location
+        this.scoreA = response.data.score_a
+        this.scoreB = response.data.score_b
+        this.teamA = this.filterTeam(response.data.players, '0')
+        this.teamB = this.filterTeam(response.data.players, '1')
       })
   },
   methods: {
-    getTeamA () {
-      this.teamA = this.eventDetails.players.filter(player => player.team === '0')
-    },
-    getTeamB () {
-      this.teamB = this.eventDetails.players.filter(player => player.team === '1')
+    filterTeam (players, team) {
+      return players.filter(player => player.team === '0')
     }
   }
 }
@@ -76,36 +117,28 @@ export default {
 <style scoped>
 
 #event {
-  padding-top: 100px;
+  padding-top: 10%;
+  min-height: 100vh;
+  background-size: cover;
 }
 
-table {
-  font-family: 'Open Sans', sans-serif;
-  width: auto;
-  border-collapse: collapse;
-  border: 3px solid rgb(0, 0, 0);
-  margin-left: 18%;
-  float: left
+#container {
+  background-color: aliceblue;
+  max-width: 40%;
+  border-radius: 20px;
 }
 
-table th {
-  text-transform: uppercase;
-  text-align: left;
-  background: rgb(0, 0, 0);
-  color: #FFF;
-  padding: 8px;
-  min-width: 30px;
+#caption {
+  text-align: center;
 }
 
-table td {
-  text-align: left;
-  padding: 8px;
-  border-right: 2px solid rgb(0, 0, 0);
+#padding {
+  position: absolute;
+  left: 43%;
 }
-table td:last-child {
-  border-right: none;
+
+#scoreboard {
+  margin-top: -45px;
 }
-table tbody tr:nth-child(2n) td {
-  background: #D4D8F9;
-}
+
 </style>

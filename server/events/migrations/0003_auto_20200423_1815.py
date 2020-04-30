@@ -28,5 +28,5 @@ class Migration(migrations.Migration):
             name='event',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_player', to='events.Event'),
         ),
-        migrations.RunPython()
+        migrations.RunPython(update_events)
     ]
