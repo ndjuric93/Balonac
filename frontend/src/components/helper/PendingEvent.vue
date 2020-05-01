@@ -44,6 +44,15 @@
             no-border-collapse
             bordered
           >
+            <template v-slot:cell(actions)="row">
+              <div id="center">
+                <b-button
+                  @click="registerAction(row)"
+                >
+                  {{state}}
+                </b-button>
+              </div>
+            </template>
           </b-table>
         </b-col>
         <b-col md="auto">
@@ -57,7 +66,24 @@
             no-border-collapse
             bordered
           >
+            <template v-slot:cell(actions)="row">
+                <b-button
+                  @click="registerAction(row)"
+                  v-show="row.item.isActive"
+                >
+                  {{state}}
+                </b-button>
+            </template>
           </b-table>
+        </b-col>
+      </b-row>
+      <b-row md="justify-content-md-center">
+        <b-col>
+          <div>
+          <b-button pill block v-on:click="finishEvent">
+            FINISH EVENT
+          </b-button>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -66,6 +92,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import InlineSvg from 'vue-inline-svg'
 import Scoreboard from './Scoreboard'
 
@@ -84,24 +112,58 @@ export default {
       scoreB: '/',
       teamA: [],
       teamB: [],
+      state: 'GOAL!',
+      goalData: {},
       fields: [
         { key: 'player_name', label: 'Players', class: 'text-center' },
         { key: 'goals_in_game', label: 'Goals', class: 'text-center' },
-        { key: 'assists_in_game', label: 'Assistances', class: 'text-center' }
+        { key: 'assists_in_game', label: 'Assistances', class: 'text-center' },
+        { key: 'actions', label: 'Actions', class: 'text-center' }
       ]
     }
   },
   created: function () {
     this.date = this.eventData.date
     this.location = this.eventData.location
-    this.scoreA = this.eventData.score_a
-    this.scoreB = this.eventData.score_b
     this.teamA = this.filterTeam(this.eventData.players, '0')
     this.teamB = this.filterTeam(this.eventData.players, '1')
+    this.scoreA = this.teamA.map(player => player.goals_in_game).reduce((a, b) => a + b, 0)
+    this.scoreB = this.teamB.map(player => player.goals_in_game).reduce((a, b) => a + b, 0)
   },
   methods: {
     filterTeam (players, team) {
+      players.map(player => { player.isActive = true })
       return players.filter(player => player.team === team)
+    },
+    registerAction (row) {
+      if (this.state === 'GOAL!') {
+        this.goalAction(row)
+      } else {
+        this.assistAction(row)
+      }
+    },
+    goalAction (row) {
+      this.goalData.scorer = row.item.id
+      const players = row.item.team === '0' ? this.teamB : this.teamA
+      players.map(player => { player.isActive = false })
+      this.state = this.state === 'GOAL!' ? 'ASSIST!' : 'GOAL!'
+    },
+    assistAction (row) {
+      this.goalData.assistant = row.item.id
+      this.completeAction()
+    },
+    completeAction () {
+      axios.put('/v1/event/player/' + this.goalData.scorer + '/', {
+        assistant_id: this.goalData.assistant
+      }).then(() => {
+        this.refreshPlayers()
+        this.state = 'GOAL!'
+        this.$router.go()
+      })
+    },
+    refreshPlayers () {
+      this.teamA.map(player => { player.isActive = true })
+      this.teamB.map(player => { player.isActive = true })
     }
   }
 }
@@ -117,8 +179,9 @@ export default {
 
 #container {
   background-color: aliceblue;
-  max-width: 40%;
+  max-width: 50%;
   border-radius: 20px;
+  padding: 3%;
 }
 
 #caption {
@@ -127,7 +190,7 @@ export default {
 
 #padding {
   position: absolute;
-  left: 43%;
+  left: 45%;
 }
 
 #scoreboard {
