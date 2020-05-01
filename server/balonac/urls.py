@@ -21,13 +21,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from players.views import CreatePlayerView, PlayersViewSet
-from events.views.events import EventsViewSet, EventStatusViewSet
+from events.views.events import EventsViewSet
 from events.views.event_player import UpdateEventPlayer
 
 router = DefaultRouter()
-# router.register(r'event', EventViewSet)
 router.register(r'event', EventsViewSet)
-router.register(r'event/status', EventStatusViewSet)
 router.register(r'event/player', UpdateEventPlayer)
 router.register(r'player', PlayersViewSet)
 

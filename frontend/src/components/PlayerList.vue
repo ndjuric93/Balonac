@@ -3,19 +3,20 @@
       <b-container fluid>
         <b-row class="justify-content-md-center">
           <b-col md="auto">
-            <b-table
-              hover
-              table-variant="light"
-              head-variant="light"
-              :items="players"
-              :fields="fields"
-              no-border-collapse
-              bordered
-              sticky-header="80%"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-            >
-            </b-table>
+            <div id="playerTable">
+              <b-table
+                hover
+                table-variant="light"
+                head-variant="light"
+                :items="players"
+                :fields="fields"
+                no-border-collapse
+                bordered
+                sticky-header="700px"
+                :sort-desc.sync="sortDesc"
+              >
+              </b-table>
+            </div>
           </b-col>
         </b-row>
       </b-container>
