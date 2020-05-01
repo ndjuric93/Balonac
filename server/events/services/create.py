@@ -22,7 +22,14 @@ def update_event(event, event_data, event_players):
         event.location = event_data['location']
     if 'date' in event_data:
         event.date = event_data['date']
+    if 'completed' in event_data:
+        event.completed = event_data['completed']
     event.save()
     for player in event_players:
-        EventPlayer.objects.get_or_create(event=event, player=player['player'])
+        event_player = EventPlayer.objects.update_or_create(
+            event=event,
+            player=player['player'],
+            defaults={
+                'team': player['team']
+            })
     return event

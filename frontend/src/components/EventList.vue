@@ -1,7 +1,25 @@
 <template>
   <div id="eventList" :style="{'background-image': 'url(' + require('../assets/eventList.jpg') + ')'}">
-
     <b-container fluid>
+      <b-row class="justify-content-md-center">
+        <b-col md="auto">
+          <b-table
+            hover
+            table-variant="light"
+            head-variant="light"
+            :items="upcomingEvents"
+            :fields="fields"
+            no-border-collapse
+            bordered
+          >
+            <template v-slot:cell(actions)="row">
+              <b-button size="sm" @click="redirectToEventDetails(row.item.id)" class="mr-1">
+                Details
+              </b-button>
+            </template>
+          </b-table>
+        </b-col>
+      </b-row>
       <b-row class="justify-content-md-center">
         <b-col md="auto">
           <b-table

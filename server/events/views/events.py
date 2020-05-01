@@ -7,7 +7,7 @@ from events.serializers import (
     EventSerializer,
     SingleEventSerializer,
     CreateEventSerializer,
-    UpdateEventStatusSerializer
+    UpdateEventSerializer
 )
 
 
@@ -25,13 +25,7 @@ class EventsViewSet(mixins.ListModelMixin,
             return EventSerializer
         elif self.action == 'retrieve':
             return SingleEventSerializer
-        else:
+        elif self.action == 'create':
             return CreateEventSerializer
-
-
-class EventStatusViewSet(mixins.UpdateModelMixin,
-                         GenericViewSet):
-    queryset = Event.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
-    serializer_class = UpdateEventStatusSerializer
+        else:
+            return UpdateEventSerializer

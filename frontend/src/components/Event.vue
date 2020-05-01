@@ -1,144 +1,43 @@
 <template>
-<div id="event" :style="{'background-image': 'url(' + require('../assets/pastEvent.jpg') + ')'}">
-  <div>
-    <div id="padding">
-      <Scoreboard
-        :team0=this.scoreA
-        :team1=this.scoreB
-        id="scoreboard"
-      />
-    </div>
-    <b-container id="container">
-      <b-row align-h="center">
-        <b-col  cols="5">
-        </b-col>
-      </b-row>
-      <b-row md="justify-content-md-center">
-        <b-col  md="4" class="p-3 ">
-          <inline-svg
-            :src="require('../assets/pastEventLeftPattern.svg')"
-            width=80%
-          />
-        </b-col>
-        <b-col md="4" class="ml-auto p-3 ">
-          <inline-svg
-            :src="require('../assets/pastEventRightPattern.svg')"
-            width=80%
-          />
-        </b-col>
-      </b-row>
-      <b-row md="justify-content-md-center">
-        <b-col >
-          <p id="caption">{{this.date}}, ({{this.location}}) </p>
-        </b-col>
-      </b-row>
-      <b-row class="justify-content-md-center">
-        <b-col md="auto">
-          <p id="caption">Team 1</p>
-          <b-table
-            hover
-            table-variant="light"
-            head-variant="light"
-            :items="teamA"
-            :fields="fields"
-            no-border-collapse
-            bordered
-          >
-          </b-table>
-        </b-col>
-        <b-col md="auto">
-          <p id="caption">Team 2</p>
-          <b-table
-            hover
-            table-variant="light"
-            head-variant="light"
-            :items="teamB"
-            :fields="fields"
-            no-border-collapse
-            bordered
-          >
-          </b-table>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
-</div>
+  <PastEvent
+    v-if="this.eventData.completed==='F'"
+    :eventData=this.eventData
+    :eventId=this.id
+  />
+  <UpcomingEvent
+    v-else-if="this.eventData.completed==='C'"
+    :eventData=this.eventData
+    :eventId=this.id
+  />
+  <PastEvent
+    v-else-if="this.eventData.completed==='P'"
+    :eventData=this.eventData
+    :eventId=this.id
+  />
 </template>
 
 <script>
 import axios from 'axios'
-import InlineSvg from 'vue-inline-svg'
-import Scoreboard from './helper/Scoreboard'
+import PastEvent from './helper/PastEvent'
+import UpcomingEvent from './helper/UpcomingEvent'
 
 export default {
   name: 'Event',
   components: {
-    InlineSvg,
-    Scoreboard
+    PastEvent,
+    UpcomingEvent
   },
-  props: {
-    id: Number
-  },
+  props: ['id'],
   data: function () {
     return {
-      date: '',
-      location: '',
-      scoreA: '/',
-      scoreB: '/',
-      teamA: [],
-      teamB: [],
-      fields: [
-        { key: 'player_name', label: 'Players', class: 'text-center' },
-        { key: 'goals_in_game', label: 'Goals', class: 'text-center' },
-        { key: 'assists_in_game', label: 'Assistances', class: 'text-center' }
-      ]
+      eventData: {}
     }
   },
   created: function () {
     return axios.get('v1/event/' + this.id)
       .then(response => {
-        console.log(response.data)
-        this.date = response.data.date
-        this.location = response.data.location
-        this.scoreA = response.data.score_a
-        this.scoreB = response.data.score_b
-        this.teamA = this.filterTeam(response.data.players, '0')
-        this.teamB = this.filterTeam(response.data.players, '1')
+        this.eventData = response.data
       })
-  },
-  methods: {
-    filterTeam (players, team) {
-      return players.filter(player => player.team === '0')
-    }
   }
 }
 </script>
-
-<style scoped>
-
-#event {
-  padding-top: 10%;
-  min-height: 100vh;
-  background-size: cover;
-}
-
-#container {
-  background-color: aliceblue;
-  max-width: 40%;
-  border-radius: 20px;
-}
-
-#caption {
-  text-align: center;
-}
-
-#padding {
-  position: absolute;
-  left: 43%;
-}
-
-#scoreboard {
-  margin-top: -45px;
-}
-
-</style>
