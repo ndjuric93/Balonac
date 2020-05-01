@@ -92,12 +92,13 @@ export default {
     }
   },
   created: function () {
+    console.log('Creating')
     this.date = this.eventData.date
     this.location = this.eventData.location
-    this.scoreA = this.eventData.score_a
-    this.scoreB = this.eventData.score_b
     this.teamA = this.filterTeam(this.eventData.players, '0')
     this.teamB = this.filterTeam(this.eventData.players, '1')
+    this.scoreA = this.teamA.map(player => player.goals_in_game).reduce((a, b) => a + b, 0)
+    this.scoreB = this.teamB.map(player => player.goals_in_game).reduce((a, b) => a + b, 0)
   },
   methods: {
     filterTeam (players, team) {
@@ -127,7 +128,7 @@ export default {
 
 #padding {
   position: absolute;
-  left: 43%;
+  left: 45%;
 }
 
 #scoreboard {

@@ -145,7 +145,7 @@ export default {
 
 #padding {
   position: absolute;
-  left: 43%;
+  left: 45%;
 }
 
 #scoreboard {

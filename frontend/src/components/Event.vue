@@ -9,7 +9,7 @@
     :eventData=this.eventData
     :eventId=this.id
   />
-  <PastEvent
+  <PendingEvent
     v-else-if="this.eventData.completed==='P'"
     :eventData=this.eventData
     :eventId=this.id
@@ -19,12 +19,14 @@
 <script>
 import axios from 'axios'
 import PastEvent from './helper/PastEvent'
+import PendingEvent from './helper/PendingEvent'
 import UpcomingEvent from './helper/UpcomingEvent'
 
 export default {
   name: 'Event',
   components: {
     PastEvent,
+    PendingEvent,
     UpcomingEvent
   },
   props: ['id'],
